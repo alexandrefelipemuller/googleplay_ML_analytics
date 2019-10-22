@@ -40,8 +40,8 @@ def read_input(input_file):
 documents = list (read_input ("./all_comments.txt.gz"))
 
 num_workers=10
-num_features=128
-min_word_count=2
+num_features=36
+min_word_count=4
 context=3
 
 model = word2vec.Word2Vec(documents, workers=num_workers, \
@@ -95,7 +95,7 @@ num_clusters=10
 tables = [];
 reviewCount=0
 amostra = []
-fname=sys.argv[1] #'BradescoCartoes.csv'
+fname=sys.argv[1]
 with codecs.open(fname, 'r',encoding='utf-8',errors='replace') as f:
         reader = csv.reader(f, delimiter=';' )
         for row in reader:
@@ -129,6 +129,9 @@ with open('output.csv', 'w') as csvfile:
                 if validWords > 0:
                         reviewVec.append(value[3])
                         reviewVec.extend(np.mean(np.array(allWordsVec), axis=0))
-                        csvWriter.writerow(reviewVec)
+		else:
+			reviewVec.append(0)
+                        reviewVec.extend([0] * num_features)
+		csvWriter.writerow(reviewVec)
 
 print('output to output.csv')

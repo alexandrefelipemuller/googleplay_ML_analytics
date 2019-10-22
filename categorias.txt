@@ -1,4 +1,8 @@
-1 Sugestão
-2 Reclamação
-3 Pedido de ajuda
+categorias comentários
+1 Sugestão - melhorias, crítica ou defeitos com causa definida
+
+2 Reclamação - mero descontentamento,  sem ser possível extrair a causa
+
+3 Pedido de ajuda - dificuldade de uso, perguntas, problemas no negócio
+
 4 Elogio
