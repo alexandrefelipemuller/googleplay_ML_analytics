@@ -40,7 +40,7 @@ def read_input(input_file):
 documents = list (read_input ("./all_comments.txt.gz"))
 
 num_workers=10
-num_features=36
+num_features=40
 min_word_count=4
 context=3
 

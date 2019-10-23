@@ -32,23 +32,23 @@ from sklearn.neighbors import KNeighborsClassifier
 k=7
 clf1 = KNeighborsClassifier(n_neighbors = k)
 clf1.fit(X_train,y_train)
-#print(clf1.score(X_test, y_test))
+print(clf1.score(X_test, y_test))
 
 # ===== SVM ======
 #check accuracy of our model on the test data
 from sklearn import svm
 clf2 = svm.SVC(gamma='scale', kernel='linear', decision_function_shape='ovo',probability=True)
 clf2.fit(X_train, y_train) 
-#print(clf2.score(X_test, y_test))
+print(clf2.score(X_test, y_test))
 
 #==== RADOM TREE ======
 from sklearn.ensemble import RandomForestClassifier
-clf3 = RandomForestClassifier(n_estimators=100)
+clf3 = RandomForestClassifier(n_estimators=1000)
 clf3 = clf3.fit(X_train, y_train)
-#print(clf3.score(X_test, y_test))
+print(clf3.score(X_test, y_test))
 
 from sklearn.ensemble import VotingClassifier
-eclf = VotingClassifier(estimators=[('knn', clf1), ('svm', clf2), ('rt', clf3)],voting='hard', weights=[1, 2, 2])
+eclf = VotingClassifier(estimators=[('knn', clf1), ('svm', clf2), ('rt', clf3)],voting='hard', weights=[1, 1, 2])
 eclf = eclf.fit(X_train, y_train)
 print(eclf.score(X_test, y_test))
 
@@ -71,26 +71,26 @@ X_predict = df2.drop(columns=['target'])
 predicted = eclf.predict(X_predict)
 showClassifierDist(predicted)
 
-#f=open('BradescoCartoes.csv')
-#i=0
-#f1 = open("sugest.csv", "a")
-#f2 = open("reclama.csv", "a")
-#f3 = open("ajuda.csv", "a")
-#f4 = open("elogio.csv", "a")
-#
-#lines=f.readlines()
-#for e in predicted:
-#	if e==1 or e=='1':
-#		f1.write(lines[i])
-#	if e==2 or e=='2':
-#		f2.write(lines[i])
-#	if e==3 or e=='3':
-#		f3.write(lines[i])
-#	if e==4 or e=='4':	
-#		f4.write(lines[i])
-#	i+=1
-#f1.close()
-#f2.close()
-#f3.close()
-#f4.close()
+f=open('BradescoCartoes.csv')
+i=0
+f1 = open("sugest.csv", "a")
+f2 = open("reclama.csv", "a")
+f3 = open("ajuda.csv", "a")
+f4 = open("elogio.csv", "a")
+
+lines=f.readlines()
+for e in predicted:
+	if e==1 or e=='1':
+		f1.write(lines[i])
+	if e==2 or e=='2':
+		f2.write(lines[i])
+	if e==3 or e=='3':
+		f3.write(lines[i])
+	if e==4 or e=='4':	
+		f4.write(lines[i])
+	i+=1
+f1.close()
+f2.close()
+f3.close()
+f4.close()
 
