@@ -38,16 +38,20 @@ def read_input(input_file):
 
 documents = list (read_input ("./all_comments.txt.gz"))
 
-num_clusters=int(sys.argv[2])
+#num_clusters=int(sys.argv[2])
 
 num_workers=10
 num_features=40
 min_word_count=4
 context=3
 
+#from gensim.models import KeyedVectors
+#model = KeyedVectors.load_word2vec_format("cbow_s50.txt");
+
 model = word2vec.Word2Vec(documents, workers=num_workers, \
             size=num_features, min_count = min_word_count, \
             window = context);
+
 # We don't plan on training the model any further, so calling 
 # init_sims will make the model more memory efficient by normalizing the vectors in-place.
 #model.init_sims(replace=True);
@@ -56,29 +60,6 @@ model = word2vec.Word2Vec(documents, workers=num_workers, \
 #model.save(model_name);
 
 #print('Total time: ' + str((time.time() - start)) + ' secs')
-Z = model.wv.syn0;
-
-def get_top_words(index2word, k, centers, wordvecs):
-    tree = KDTree(wordvecs);
-    #Closest points for each Cluster center is used to query the closest 20 points to it.
-    closest_points = [tree.query(np.reshape(x, (1, -1)), k=k) for x in centers];
-    closest_words_idxs = [x[1] for x in closest_points];
-    #Word Index is queried for each position in the above array, and added to a Dictionary.
-    closest_words = {};
-    for i in range(0, len(closest_words_idxs)):
-        closest_words['Cluster #' + str(i)] = [index2word[j] for j in closest_words_idxs[i][0]]
-    #A DataFrame is generated from the dictionary.
-    df = pd.DataFrame(closest_words);
-    df.index = df.index+1
-    return df;
-
-def display_cloud(cluster_num, cmap):
-    wc = WordCloud(background_color="black", max_words=100, max_font_size=80, colormap=cmap);
-    wordcloud = wc.generate(' '.join([word for word in top_words['Cluster #' + str(cluster_num)]]))
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis("off")
-    plt.savefig('cluster_' + str(cluster_num), bbox_inches='tight')
-
 
 tables = [];
 allReviews = []
@@ -112,14 +93,31 @@ for value in amostra:
 		reviewVec.extend([0] * num_features)
 	allReviews.append(reviewVec);
 
-kmeans_clustering = KMeans(n_clusters = num_clusters, init='k-means++');
+
+from sklearn.metrics import silhouette_score
+
+sil = []
+kmin = 2
+kmax = 25
+
+for k in range(kmin, kmax):
+	kmeans_clustering = KMeans(n_clusters = k, init='k-means++').fit(allReviews); 
+	labels = kmeans_clustering.labels_
+	sil.append(silhouette_score(allReviews, labels, metric = 'euclidean'))
+
+import operator
+index, value = max(enumerate(sil), key=operator.itemgetter(1))
+bestk = index+kmin
+print ("best k: ",bestk)
+kmeans_clustering = KMeans(n_clusters = bestk, init='k-means++');
 idx = kmeans_clustering.fit_predict(allReviews); 
 centers, clusters = kmeans_clustering.cluster_centers_, idx;
 
 i=0
 cls=[]
+print('lineno, cluster')
 for cluster in clusters:
 	i+=1
 	print(str(i)+","+str(cluster+1));
 
-#print('output to output.csv')
+
