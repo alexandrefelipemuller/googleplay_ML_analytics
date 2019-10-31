@@ -36,28 +36,22 @@ def read_input(input_file):
                         yield gensim.utils.simple_preprocess (line)
 
 
-documents = list (read_input ("./all_comments.txt.gz"))
+#documents = list (read_input ("./all_comments.txt.gz"))
 
 #num_clusters=int(sys.argv[2])
 
 num_workers=10
-num_features=40
+num_features=50
 min_word_count=4
 context=3
 
-#from gensim.models import KeyedVectors
-#model = KeyedVectors.load_word2vec_format("cbow_s50.txt");
+from gensim.models import KeyedVectors
+model = KeyedVectors.load('model_bradesco')
 
-model = word2vec.Word2Vec(documents, workers=num_workers, \
-            size=num_features, min_count = min_word_count, \
-            window = context);
+#model = word2vec.Word2Vec(documents, workers=num_workers, \
+#            size=num_features, min_count = min_word_count, \
+#            window = context);
 
-# We don't plan on training the model any further, so calling 
-# init_sims will make the model more memory efficient by normalizing the vectors in-place.
-#model.init_sims(replace=True);
-# Save the model
-#model_name = "model_bradesco";
-#model.save(model_name);
 
 #print('Total time: ' + str((time.time() - start)) + ' secs')
 
@@ -97,8 +91,8 @@ for value in amostra:
 from sklearn.metrics import silhouette_score
 
 sil = []
-kmin = 2
-kmax = 25
+kmin = 4
+kmax = 30
 
 for k in range(kmin, kmax):
 	kmeans_clustering = KMeans(n_clusters = k, init='k-means++').fit(allReviews); 

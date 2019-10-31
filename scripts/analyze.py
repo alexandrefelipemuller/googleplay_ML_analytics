@@ -1,11 +1,15 @@
-
-#%matplotlib inline
-import nltk.data;
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from gensim.models import word2vec;
-import gensim
-import gzip
 from sklearn.cluster import KMeans;
 from sklearn.neighbors import KDTree;
+from wordcloud import WordCloud, ImageColorGenerator
+import sys
+import unicodedata
+import re
+import nltk.data;
+import gensim
+import gzip
 import pandas as pd;
 import numpy as np;
 import os;
@@ -17,7 +21,6 @@ import time;
 import codecs
 import sys;
 import multiprocessing;
-from wordcloud import WordCloud, ImageColorGenerator
 import matplotlib.pyplot as plt;
 from itertools import cycle;
 
@@ -27,15 +30,47 @@ sys.setdefaultencoding('utf8')
 print("Training model...");
 start = time.time();
 
+def strip_accents(input_str):
+    nfkd_form = unicodedata.normalize('NFKD', input_str)
+    only_ascii = nfkd_form.encode('ASCII', 'ignore')
+    return only_ascii
+
+def convert_com(text):
+	text = re.sub('\?', ' pergunta ', text)
+	text = re.sub('\!', ' exclama ', text)
+	text = re.sub('🤔', ' pensativo ', text)
+	text = re.sub('😍', ' apaixonado ', text)
+	text = re.sub('🥰', ' papaixonado ', text) 
+	text = re.sub('👊', ' soquinho ', text)
+	text = re.sub('😢', ' chorando ', text)
+	text = re.sub('👏', ' amen ', text)
+	text = re.sub('😌', ' satisfeito ', text)
+	text = re.sub('😤', ' bufando ', text)
+	text = re.sub('😁', ' feliz ', text)
+	text = re.sub('🙏', ' amen ', text)
+	text = re.sub('🙌', ' exclama ', text)
+	text = re.sub('🤙', ' hangloose ', text)
+	text = re.sub('👍', ' joinha ', text)
+	text = re.sub('☹️,', ' triste ', text)
+	text = re.sub('😡', ' bravo ', text)
+	text = re.sub('🤢', ' enjoado ', text)
+	text = re.sub('❤️', ' coracao ', text)
+	text = re.sub('😐', ' serio ', text)
+	text = re.sub('\.\.\.', ' reticencias ', text)
+	text = text.decode('utf-8').lower()
+	text = strip_accents(text)
+	text = re.sub('[ ]+', ' ', text)
+	text = re.sub('[^0-9a-zA-Z_\ -]', '', text)
+	return text
+
 def read_input(input_file):
         """This method reads the input file which is in gzip format"""
         logging.info("reading file {0}...this may take a while".format(input_file))
         with gzip.open (input_file, 'rb') as f:
                 for i, line in enumerate (f):
                         if (i%5000==0):
-                                logging.info ("read {0} reviews".format (i))
-                        yield gensim.utils.simple_preprocess (line)
-
+                                print ("read {0} reviews".format (i))
+                        yield gensim.utils.simple_preprocess(convert_com(line))
 
 documents = list (read_input ("./all_comments.txt.gz"))
 
@@ -44,6 +79,9 @@ num_features=40
 min_word_count=4
 context=3
 
+#from gensim.models import KeyedVectors
+#model = KeyedVectors.load_word2vec_format("cbow_s50.txt");
+
 model = word2vec.Word2Vec(documents, workers=num_workers, \
             size=num_features, min_count = min_word_count, \
             window = context);
@@ -51,8 +89,8 @@ model = word2vec.Word2Vec(documents, workers=num_workers, \
 # init_sims will make the model more memory efficient by normalizing the vectors in-place.
 #model.init_sims(replace=True);
 # Save the model
-#model_name = "model_bradesco";
-#model.save(model_name);
+model_name = "model_bradesco";
+model.save(model_name);
 
 print('Total time: ' + str((time.time() - start)) + ' secs')
 Z = model.wv.syn0;
@@ -90,8 +128,6 @@ num_clusters=10
 #top_words = get_top_words(model.wv.index2word, 50, centers, Z);
 #print(top_words)
 
-#keys = ['bradesco', 'aplicativo', 'problema', 'facil', 'preciso', 'conta', 'cartao', 'nubank', 'compras', 'extrato', 'fatura', 'gasto', ];
-
 tables = [];
 reviewCount=0
 amostra = []
@@ -110,7 +146,7 @@ with open('output.csv', 'w') as csvfile:
         csvWriter.writerow(header)
         for value in amostra:
                 reviewCount+=1
-                value[2] = value[2].split(' ')
+		value[2] = convert_com(value[2]).split(' ')
                 reviewVec = []
                 validWords=0
                 allWordsVec=[]
@@ -126,11 +162,10 @@ with open('output.csv', 'w') as csvfile:
                                 pass
                 if (reviewCount % 500 == 0):
                         print ("Review ",reviewCount," com ",validWords," palavras")
+		reviewVec.append(value[3])
                 if validWords > 0:
-                        reviewVec.append(value[3])
                         reviewVec.extend(np.mean(np.array(allWordsVec), axis=0))
 		else:
-			reviewVec.append(0)
                         reviewVec.extend([0] * num_features)
 		csvWriter.writerow(reviewVec)
 
