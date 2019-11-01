@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from gensim.models import word2vec;
-from sklearn.cluster import KMeans;
-from sklearn.neighbors import KDTree;
+from gensim.models import Word2Vec
+from sklearn.cluster import KMeans
+from sklearn.neighbors import KDTree
 from wordcloud import WordCloud, ImageColorGenerator
+import nltk
 from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
 import sys
+import os.path
+from os import path
 import unicodedata
 import re
 import nltk.data;
@@ -73,25 +77,25 @@ def read_input(input_file):
                                 print ("read {0} reviews".format (i))
                         yield gensim.utils.simple_preprocess(convert_com(line))
 
-documents = list (read_input ("./all_comments.txt.gz"))
-
-num_workers=10
 num_features=40
-min_word_count=4
-context=3
-
 #from gensim.models import KeyedVectors
 #model = KeyedVectors.load_word2vec_format("cbow_s50.txt");
-
-model = word2vec.Word2Vec(documents, workers=num_workers, \
+model_name = "model_bradesco";
+if (path.isfile(model_name)):
+	model = Word2Vec.load(model_name)
+else:
+	documents = list (read_input ("./all_comments.txt.gz"))
+	num_workers=10
+	min_word_count=4
+	context=3
+	model = Word2Vec.Word2Vec(documents, workers=num_workers, \
             size=num_features, min_count = min_word_count, \
             window = context);
-# We don't plan on training the model any further, so calling 
-# init_sims will make the model more memory efficient by normalizing the vectors in-place.
-#model.init_sims(replace=True);
-# Save the model
-model_name = "model_bradesco";
-model.save(model_name);
+	# Save the model
+	# We don't plan on training the model any further, so calling 
+	# init_sims will make the model more memory efficient by normalizing the vectors in-place.
+	model.init_sims(replace=True);
+	model.save(model_name);
 
 print('Total time: ' + str((time.time() - start)) + ' secs')
 Z = model.wv.syn0;
@@ -147,11 +151,13 @@ with open('output.csv', 'w') as csvfile:
         csvWriter.writerow(header)
         for value in amostra:
                 reviewCount+=1
-		value[2] = convert_com(value[2]).split(' ')
+		word_tokens = word_tokenize(convert_com(value[2]))
+		stop_words = set(stopwords.words('portuguese')) 
+		filtered_sentence = [w for w in word_tokens if not w in stop_words]
                 reviewVec = []
                 validWords=0
                 allWordsVec=[]
-                for word in value[2]:
+                for word in filtered_sentence:
                         m = re.match(r"(\w{3,})",word)
                         if bool(m):
                                 try:
