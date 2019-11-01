@@ -4,6 +4,7 @@ from gensim.models import word2vec;
 from sklearn.cluster import KMeans;
 from sklearn.neighbors import KDTree;
 from wordcloud import WordCloud, ImageColorGenerator
+from nltk.corpus import stopwords 
 import sys
 import unicodedata
 import re
@@ -36,8 +37,8 @@ def strip_accents(input_str):
     return only_ascii
 
 def convert_com(text):
-	text = re.sub('\?', ' pergunta ', text)
-	text = re.sub('\!', ' exclama ', text)
+	text = re.sub('\?', ' pergunto ', text)
+	text = re.sub('\!', ' exclamo ', text)
 	text = re.sub('🤔', ' pensativo ', text)
 	text = re.sub('😍', ' apaixonado ', text)
 	text = re.sub('🥰', ' papaixonado ', text) 
@@ -48,9 +49,9 @@ def convert_com(text):
 	text = re.sub('😤', ' bufando ', text)
 	text = re.sub('😁', ' feliz ', text)
 	text = re.sub('🙏', ' amen ', text)
-	text = re.sub('🙌', ' exclama ', text)
+	text = re.sub('🙌', ' celebracao ', text)
 	text = re.sub('🤙', ' hangloose ', text)
-	text = re.sub('👍', ' joinha ', text)
+	text = re.sub('👍', ' curti ', text)
 	text = re.sub('☹️,', ' triste ', text)
 	text = re.sub('😡', ' bravo ', text)
 	text = re.sub('🤢', ' enjoado ', text)

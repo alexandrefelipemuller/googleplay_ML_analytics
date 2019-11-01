@@ -27,27 +27,29 @@ y = df['target'].values
 
 from sklearn.model_selection import train_test_split
 #split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, stratify=y)
 
 print("confiabilidade")
 # ======= KNN classifier ========
 from sklearn.neighbors import KNeighborsClassifier
 bestk,bestscore = 0,0
-for k in range(1,120,2):
-	clf1 = KNeighborsClassifier(n_neighbors = k)
+for k in range(1,100,2):
+	clf1 = KNeighborsClassifier(n_neighbors = k, weights='distance', metric='euclidean')
 	clf1.fit(X_train,y_train)
 	if (clf1.score(X_test, y_test) > bestscore):
 		bestk=k
 		bestscore=clf1.score(X_test, y_test)
 clf1 = KNeighborsClassifier(n_neighbors = bestk)
 clf1.fit(X_train,y_train)
+print("KNN bestk: "+str(bestk))
 print(clf1.score(X_test, y_test))
 
 # ===== SVM ======
 #check accuracy of our model on the test data
 from sklearn import svm
 clf2 = svm.SVC(gamma='scale', kernel='linear', decision_function_shape='ovo',probability=True)
-clf2.fit(X_train, y_train) 
+clf2.fit(X_train, y_train)
+print("SVM") 
 print(clf2.score(X_test, y_test))
 
 #==== RADOM TREE ======
@@ -61,6 +63,7 @@ for n in range(100,3000,500):
                 bestscore=clf3.score(X_test, y_test)
 clf3 = RandomForestClassifier(n_estimators=bestn)
 clf3 = clf3.fit(X_train, y_train)
+print('Random Forest, estimators: '+str(bestn))
 print(clf3.score(X_test, y_test))
 
 from sklearn.ensemble import VotingClassifier
