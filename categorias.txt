@@ -1,8 +1,25 @@
 categorias comentários
-1 Sugestão - melhorias, crítica ou defeitos com causa definida
+
+=== Separação pela natureza de acordo com negócio ===
+
+1 Sugestão - melhorias, crítica ou defeitos com causa definida, comparação com concorrente
 
 2 Reclamação - mero descontentamento,  sem ser possível extrair a causa
 
 3 Pedido de ajuda - dificuldade de uso, perguntas, problemas no negócio
 
 4 Elogio
+
+=== Separação pelo sentimento ===
+
+1 Alegria
+
+2 Tristeza/Medo/Decepção
+
+3 Raiva/Repulsa
+
+4 Confusão
+
+5 Indiferença
+
+

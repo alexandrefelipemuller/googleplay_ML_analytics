@@ -12,19 +12,20 @@ import os.path
 from os import path
 import unicodedata
 import re
-import nltk.data;
+import nltk.data
 import gensim
 import gzip
-import pandas as pd;
-import numpy as np;
-import os;
-import re;
-import logging;
-import csv;
-import sqlite3;
-import time;
+import pandas as pd
+import numpy as np
+import os
+import re
+import logging
+import csv
+import sqlite3
+import time
 import codecs
-import sys;
+import sys
+import preprocess
 import multiprocessing;
 import matplotlib.pyplot as plt;
 from itertools import cycle;
@@ -34,48 +35,6 @@ sys.setdefaultencoding('utf8')
 
 print("Training model...");
 start = time.time();
-
-def strip_accents(input_str):
-    nfkd_form = unicodedata.normalize('NFKD', input_str)
-    only_ascii = nfkd_form.encode('ASCII', 'ignore')
-    return only_ascii
-
-def convert_com(text):
-	text = re.sub('\?', ' pergunto ', text)
-	text = re.sub('\!', ' exclamo ', text)
-	text = re.sub('🤔', ' pensativo ', text)
-	text = re.sub('😍', ' apaixonado ', text)
-	text = re.sub('🥰', ' papaixonado ', text) 
-	text = re.sub('👊', ' soquinho ', text)
-	text = re.sub('😢', ' chorando ', text)
-	text = re.sub('👏', ' amen ', text)
-	text = re.sub('😌', ' satisfeito ', text)
-	text = re.sub('😤', ' bufando ', text)
-	text = re.sub('😁', ' feliz ', text)
-	text = re.sub('🙏', ' amen ', text)
-	text = re.sub('🙌', ' celebracao ', text)
-	text = re.sub('🤙', ' hangloose ', text)
-	text = re.sub('👍', ' curti ', text)
-	text = re.sub('☹️,', ' triste ', text)
-	text = re.sub('😡', ' bravo ', text)
-	text = re.sub('🤢', ' enjoado ', text)
-	text = re.sub('❤️', ' coracao ', text)
-	text = re.sub('😐', ' serio ', text)
-	text = re.sub('\.\.\.', ' reticencias ', text)
-	text = text.decode('utf-8').lower()
-	text = strip_accents(text)
-	text = re.sub('[ ]+', ' ', text)
-	text = re.sub('[^0-9a-zA-Z_\ -]', '', text)
-	return text
-
-def read_input(input_file):
-        """This method reads the input file which is in gzip format"""
-        logging.info("reading file {0}...this may take a while".format(input_file))
-        with gzip.open (input_file, 'rb') as f:
-                for i, line in enumerate (f):
-                        if (i%5000==0):
-                                print ("read {0} reviews".format (i))
-                        yield gensim.utils.simple_preprocess(convert_com(line))
 
 num_features=40
 #from gensim.models import KeyedVectors
@@ -151,7 +110,7 @@ with open('output.csv', 'w') as csvfile:
         csvWriter.writerow(header)
         for value in amostra:
                 reviewCount+=1
-		word_tokens = word_tokenize(convert_com(value[2]))
+		word_tokens = word_tokenize(preprocess.convert_com(value[2]))
 		stop_words = set(stopwords.words('portuguese')) 
 		filtered_sentence = [w for w in word_tokens if not w in stop_words]
                 reviewVec = []

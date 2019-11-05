@@ -28,21 +28,14 @@ y = df['target'].values
 
 from sklearn.model_selection import train_test_split
 #split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, stratify=y)
 
 print("confiabilidade")
 # ======= KNN classifier ========
 from sklearn.neighbors import KNeighborsClassifier
-bestk,bestscore = 0,0
-for k in range(1,100,2):
-	clf1 = KNeighborsClassifier(n_neighbors = k, weights='distance', metric='euclidean')
-	clf1.fit(X_train,y_train)
-	if (clf1.score(X_test, y_test) > bestscore):
-		bestk=k
-		bestscore=clf1.score(X_test, y_test)
-clf1 = KNeighborsClassifier(n_neighbors = bestk, weights='distance', metric='euclidean')
+clf1 = KNeighborsClassifier(n_neighbors = 7, weights='distance', metric='euclidean')
 clf1.fit(X_train,y_train)
-print("KNN bestk: "+str(bestk))
+clf1.fit(X_train,y_train)
 print(clf1.score(X_test, y_test))
 
 # ===== SVM ======
@@ -55,48 +48,16 @@ print(clf2.score(X_test, y_test))
 
 #==== RADOM TREE ======
 from sklearn.ensemble import RandomForestClassifier
-bestn, bestscore = 0,0
-for n in range(100,3000,500):
-	clf3 = RandomForestClassifier(n_estimators=n)
-	clf3 = clf3.fit(X_train, y_train)
-	if (clf3.score(X_test, y_test) > bestscore):
-                bestn=n
-                bestscore=clf3.score(X_test, y_test)
-clf3 = RandomForestClassifier(n_estimators=bestn)
+clf3 = RandomForestClassifier(n_estimators=600)
 clf3 = clf3.fit(X_train, y_train)
-print('Random Forest, estimators: '+str(bestn))
 print(clf3.score(X_test, y_test))
 
 from sklearn.ensemble import VotingClassifier
 
+eclf = VotingClassifier(estimators=[('knn', clf1), ('svm', clf2), ('rt', clf3)],voting='soft', weights=[5,9,5])
+eclf = eclf.fit(X_train, y_train)
+print(eclf.score(X_test, y_test))
 
-from simanneal import Annealer
-class OptimizeWeights(Annealer):
-	def move(self):
-		a = random.randint(0, len(self.state) - 1)
-		if (random.randint(0,1) == 0):
-			self.state[a] += 1
-		else:
-			if self.state[a] > 0:
-				self.state[a] -= 1
-	def energy(self):
-		eclf = VotingClassifier(estimators=[('knn', clf1), ('svm', clf2), ('rt', clf3)],voting='hard', weights=self.state)
-		eclf = eclf.fit(X_train, y_train)
-		accuracy = eclf.score(X_test, y_test)
-		e = 1 / accuracy
-		return e
-
-initialState = [ 1 for x in range(3) ]
-optW = OptimizeWeights(initialState)
-
-optW.Tmin = 1
-optW.steps = 5000
-optW.updates = 5
-
-optimumWeights, optAccuracy = optW.anneal()
-print("Annealing finished!")
-print("Accuracy: "+str(1/optAccuracy))
-print(optimumWeights)
 print("Checking models...")
 
 def showClassifierDist(predicted):
@@ -117,8 +78,6 @@ df2 = pd.read_csv("output_p.csv")
 X_predict = df2.drop(columns=['target'])
 predicted = eclf.predict(X_predict)
 showClassifierDist(predicted)
-
-
 
 def plot_confusion_matrix(y_true, y_pred, classes,
                           normalize=False,
@@ -185,10 +144,10 @@ def plot_confusion_matrix(y_true, y_pred, classes,
 
 f=open('BradescoCartoes.csv')
 i=0
-f1 = open("sugest.csv", "a")
-f2 = open("reclama.csv", "a")
-f3 = open("ajuda.csv", "a")
-f4 = open("elogio.csv", "a")
+f1 = open("sugest.csv", "w")
+f2 = open("reclama.csv", "w")
+f3 = open("ajuda.csv", "w")
+f4 = open("elogio.csv", "w")
 
 lines=f.readlines()
 for e in predicted:
