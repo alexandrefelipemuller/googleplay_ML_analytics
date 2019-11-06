@@ -90,7 +90,7 @@ initialState = [ 1 for x in range(3) ]
 optW = OptimizeWeights(initialState)
 
 optW.Tmin = 1
-optW.steps = 5000
+optW.steps = 1000
 optW.updates = 5
 
 optimumWeights, optAccuracy = optW.anneal()

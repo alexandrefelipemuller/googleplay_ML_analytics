@@ -38,6 +38,10 @@ from itertools import cycle;
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+if (len(sys.argv) < 3):
+	print("usage <command> <file> <column to predict>")
+	sys.exit()
+
 print("Training model...");
 start = time.time();
 
@@ -51,7 +55,9 @@ num_clusters=10
 tables = [];
 reviewCount=0
 amostra = []
+
 fname=sys.argv[1]
+column=sys.argv[2]
 with codecs.open(fname, 'r',encoding='utf-8',errors='replace') as f:
         reader = csv.reader(f, delimiter=';' )
         for row in reader:
@@ -84,7 +90,7 @@ with open('output.csv', 'w') as csvfile:
                                 pass
                 if (reviewCount % 500 == 0):
                         print ("Review ",reviewCount," com ",validWords," palavras")
-		reviewVec.append(value[3])
+		reviewVec.append(value[column])
                 if validWords > 0:
                         reviewVec.extend(np.mean(np.array(allWordsVec), axis=0))
 		else:
