@@ -28,7 +28,7 @@ sys.setdefaultencoding('utf8')
 start = time.time();
 
 num_workers=10
-num_features=50
+num_features=300
 min_word_count=4
 context=3
 
@@ -75,8 +75,8 @@ for value in amostra:
 from sklearn.metrics import silhouette_score
 
 sil = []
-kmin = 5
-kmax = 100
+kmin = 50
+kmax = 200
 
 for k in range(kmin, kmax):
 	kmeans_clustering = KMeans(n_clusters = k, init='k-means++').fit(allReviews); 

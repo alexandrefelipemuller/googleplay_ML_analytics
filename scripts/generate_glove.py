@@ -66,7 +66,7 @@ if __name__ == '__main__':
         print('Training the GloVe model')
 	#from gensim.models.keyedvectors import KeyedVectors
 	#glove = KeyedVectors.load_word2vec_format("glove_s50.txt", binary=False)
-        glove = Glove(no_components=50, learning_rate=0.05)
+        glove = Glove(no_components=300, learning_rate=0.05)
         glove.fit(corpus_model.matrix, epochs=int(args.train),
                   no_threads=args.parallelism, verbose=True)
         glove.add_dictionary(corpus_model.dictionary)

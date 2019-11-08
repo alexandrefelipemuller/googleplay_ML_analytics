@@ -28,8 +28,7 @@ y = df['target'].values
 
 from sklearn.model_selection import train_test_split
 #split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, stratify=y)
-
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
 print("confiabilidade")
 # ======= KNN classifier ========
 from sklearn.neighbors import KNeighborsClassifier

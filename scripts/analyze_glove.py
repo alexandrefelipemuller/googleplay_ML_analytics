@@ -34,9 +34,12 @@ import codecs
 import sys;
 import matplotlib.pyplot as plt;
 from itertools import cycle;
+from spellchecker import SpellChecker  
 
 reload(sys)
 sys.setdefaultencoding('utf8')
+
+spell = SpellChecker('pt')
 
 if (len(sys.argv) < 3):
 	print("usage <command> <file> <column to predict>")
@@ -46,18 +49,16 @@ print("Training model...");
 start = time.time();
 
 
-num_features=50
+num_features=300
 print('Loading pre-trained GloVe model')
 glove = Glove.load('glove.model')
-
-num_clusters=10
 
 tables = [];
 reviewCount=0
 amostra = []
 
 fname=sys.argv[1]
-column=sys.argv[2]
+column=int(sys.argv[2])
 with codecs.open(fname, 'r',encoding='utf-8',errors='replace') as f:
         reader = csv.reader(f, delimiter=';' )
         for row in reader:
@@ -81,8 +82,9 @@ with open('output.csv', 'w') as csvfile:
                 for word in filtered_sentence:
                         m = re.match(r"(\w{3,})",word)
                         if bool(m):
+				word_spelled = spell.correction(m.group(0))
                                 try:
-                                        allWordsVec.append(glove.word_vectors[glove.dictionary[m.group(0)]])
+                                        allWordsVec.append(glove.word_vectors[glove.dictionary[word_spelled]])
                                         validWords+=1
                                 except KeyError as error:
                                         pass
