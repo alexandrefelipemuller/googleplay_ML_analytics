@@ -36,6 +36,9 @@ if __name__ == '__main__':
     parser.add_argument('--parallelism', '-p', action='store',
                         default=1,
                         help=('Number of parallel threads to use for training'))
+    parser.add_argument('--features', '-f', action='store',
+                        default=100,
+                        help=('Number of features to be used'))
     parser.add_argument('--query', '-q', action='store',
                         default='',
                         help='Get closes words to this word.')
@@ -66,7 +69,7 @@ if __name__ == '__main__':
         print('Training the GloVe model')
 	#from gensim.models.keyedvectors import KeyedVectors
 	#glove = KeyedVectors.load_word2vec_format("glove_s50.txt", binary=False)
-        glove = Glove(no_components=300, learning_rate=0.05)
+        glove = Glove(no_components=int(args.features), learning_rate=0.05)
         glove.fit(corpus_model.matrix, epochs=int(args.train),
                   no_threads=args.parallelism, verbose=True)
         glove.add_dictionary(corpus_model.dictionary)

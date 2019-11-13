@@ -28,55 +28,57 @@ y = df['target'].values
 
 from sklearn.model_selection import train_test_split
 #split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
+#X_train = X
+#y_train = y
+#df2 = pd.read_csv("output_p.csv")
+#y_test = df2['target']
+#X_test = df2.drop(columns=['target'])
+
+nb_classes = len(np.unique(y_test))
+ 
 print("confiabilidade")
 # ======= KNN classifier ========
 from sklearn.neighbors import KNeighborsClassifier
-clf1 = KNeighborsClassifier(n_neighbors = 7, weights='distance', metric='euclidean')
+clf1 = KNeighborsClassifier(n_neighbors = 17, weights='distance', metric='euclidean')
 clf1.fit(X_train,y_train)
-clf1.fit(X_train,y_train)
-print(clf1.score(X_test, y_test))
+#print(clf1.score(X_test, y_test))
 
 # ===== SVM ======
 #check accuracy of our model on the test data
 from sklearn import svm
 clf2 = svm.SVC(gamma='scale', kernel='linear', decision_function_shape='ovo',probability=True)
 clf2.fit(X_train, y_train)
-print("SVM") 
-print(clf2.score(X_test, y_test))
+#print("SVM") 
+#print(clf2.score(X_test, y_test))
 
 #==== RADOM TREE ======
 from sklearn.ensemble import RandomForestClassifier
 clf3 = RandomForestClassifier(n_estimators=600)
 clf3 = clf3.fit(X_train, y_train)
-print(clf3.score(X_test, y_test))
+#print(clf3.score(X_test, y_test))
 
 from sklearn.ensemble import VotingClassifier
 
-eclf = VotingClassifier(estimators=[('knn', clf1), ('svm', clf2), ('rt', clf3)],voting='soft', weights=[5,9,5])
+eclf = VotingClassifier(estimators=[('knn', clf1), ('svm', clf2), ('rt', clf3)],voting='hard', weights=[2,2,5])
 eclf = eclf.fit(X_train, y_train)
-print(eclf.score(X_test, y_test))
+print(str(round((eclf.score(X_test, y_test))*100,2)) + "%")
 
 print("Checking models...")
 
-def showClassifierDist(predicted):
+def showClassifierDist(predicted, nb_classes):
 	print('distribuicao no projeto')
-	classe1,classe2,classe3,classe4 = 0,0,0,0
+	classes = [0] * nb_classes
 	for e in predicted:
-	    if e==1 or e=='1':
-        	classe1+=1
-	    if e==2 or e=='2':
-	        classe2+=1
-	    if e==3 or e=='3':
-	        classe3+=1
-	    if e==4 or e=='4':
-	        classe4+=1
-	print(classe1, classe2, classe3, classe4)
-'''
+	    for cl in range(nb_classes):
+		if int(e)==(int(cl)+1):
+        		classes[cl]+=1
+	print(classes)
+
 df2 = pd.read_csv("output_p.csv")
 X_predict = df2.drop(columns=['target'])
 predicted = eclf.predict(X_predict)
-showClassifierDist(predicted)
+showClassifierDist(predicted, nb_classes)
 
 def plot_confusion_matrix(y_true, y_pred, classes,
                           normalize=False,
@@ -131,36 +133,31 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     return ax
 
 
-#np.set_printoptions(precision=2)
-
-#class_names = [0,1,2,3,4]
+np.set_printoptions(precision=2)
+class_names = range(1,nb_classes+1)
 
 # Plot non-normalized confusion matrix
 #plot_confusion_matrix(y_test, predicted, classes=class_names, title='Confusion matrix, without normalization')
 # Plot normalized confusion matrix
-#plot_confusion_matrix(y_test, predicted, classes=class_names, normalize=True, title='Normalized confusion matrix')
-#plt.show()
+x_predicted = eclf.predict(X_test)
+plot_confusion_matrix(y_test, x_predicted, classes=class_names, normalize=True, title='Normalized confusion matrix')
+plt.show()
 
-f=open('BradescoCartoes.csv')
-i=0
-f1 = open("sugest.csv", "w")
-f2 = open("reclama.csv", "w")
-f3 = open("ajuda.csv", "w")
-f4 = open("elogio.csv", "w")
-
-lines=f.readlines()
-for e in predicted:
-	if e==1 or e=='1':
-		f1.write(lines[i])
-	if e==2 or e=='2':
-		f2.write(lines[i])
-	if e==3 or e=='3':
-		f3.write(lines[i])
-	if e==4 or e=='4':	
-		f4.write(lines[i])
-	i+=1
-f1.close()
-f2.close()
-f3.close()
-f4.close()
-'''
+splitfile = sys.argv[1]
+if len(splitfile) > 1:
+	f=open(splitfile)
+	i=0
+	filesd = []
+	for cl in range(nb_classes):
+		filesd.append(open(str(cl+1)+".csv", "w"))
+	
+	lines=f.readlines()
+	for e in predicted:
+		for cl in range(nb_classes):
+			if int(e) == cl+1:
+				filesd[cl].write(lines[i])
+		i+=1
+	
+	for cl in range(nb_classes):
+		filesd[cl].close()
+	

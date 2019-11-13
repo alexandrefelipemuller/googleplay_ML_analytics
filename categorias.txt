@@ -1,5 +1,14 @@
-categorias comentários
+Coluna 1
+Nome
 
+Coluna 2
+Data
+
+Coluna 3
+Comentário
+
+Categorias comentários
+Coluna 4
 === Separação pela natureza de acordo com negócio ===
 
 1 Sugestão - melhorias, crítica ou defeitos com causa definida, comparação com concorrente
@@ -10,6 +19,7 @@ categorias comentários
 
 4 Elogio
 
+Coluna 5
 === Separação pelo sentimento ===
 
 1 Alegria

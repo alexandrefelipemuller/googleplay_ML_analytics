@@ -28,7 +28,12 @@ y = df['target'].values
 
 from sklearn.model_selection import train_test_split
 #split dataset into train and test data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, stratify=y)
+#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, stratify=y)
+X_train = X
+y_train = y
+df2 = pd.read_csv("output_p.csv")
+y_test = df2['target']
+X_test = df2.drop(columns=['target'])
 
 print("confiabilidade")
 # ======= KNN classifier ========
@@ -90,7 +95,8 @@ initialState = [ 1 for x in range(3) ]
 optW = OptimizeWeights(initialState)
 
 optW.Tmin = 1
-optW.steps = 1000
+#optW.steps = 1000
+optW.steps = 500
 optW.updates = 5
 
 optimumWeights, optAccuracy = optW.anneal()

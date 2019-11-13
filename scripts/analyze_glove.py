@@ -49,9 +49,11 @@ print("Training model...");
 start = time.time();
 
 
-num_features=300
+num_features=100
 print('Loading pre-trained GloVe model')
 glove = Glove.load('glove.model')
+#from gensim.models.keyedvectors import KeyedVectors
+#glove = KeyedVectors.load_word2vec_format("glove_s50.txt", binary=False)
 
 tables = [];
 reviewCount=0
@@ -59,10 +61,14 @@ amostra = []
 
 fname=sys.argv[1]
 column=int(sys.argv[2])
-with codecs.open(fname, 'r',encoding='utf-8',errors='replace') as f:
-        reader = csv.reader(f, delimiter=';' )
-        for row in reader:
-                amostra.append(row)
+with codecs.open(fname, 'r',encoding='utf-8',errors='strict') as f:
+        reader = csv.reader(f, delimiter=';', quoting=csv.QUOTE_NONE)
+	try:
+	        for row in reader:
+        	        amostra.append(row)
+	except csv.Error as e:
+		sys.exit('file {}, line {}: {}'.format(fname, reader.line_num, e))
+
 header = [];
 header.append('target')
 for x in range(int(num_features)):
@@ -82,9 +88,11 @@ with open('output.csv', 'w') as csvfile:
                 for word in filtered_sentence:
                         m = re.match(r"(\w{3,})",word)
                         if bool(m):
-				word_spelled = spell.correction(m.group(0))
+				#word_spelled = spell.correction(m.group(0))
+				word_spelled = m.group(0)
                                 try:
                                         allWordsVec.append(glove.word_vectors[glove.dictionary[word_spelled]])
+                                        #allWordsVec.append(glove[word_spelled])
                                         validWords+=1
                                 except KeyError as error:
                                         pass
