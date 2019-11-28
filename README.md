@@ -3,15 +3,21 @@ Automatic Machine Learning Analytics for Google Play Comments
 
 # How to use
 Import your glove model or train using your corpus with:
+
 python generate_glove.py -c all_comments.txt -t 100 -f 100 -p 10 
 
 generate predict model using column 3 (category A)
+
 python analyze_glove.py ../data/BradescoCartoes.csv  3
+
 mv output.csv output_p.csv
 
 generate training model
+
 ../data/generateCSV.sh
+
 python analyze_glove.py input.csv 3
+
 mv output.csv output_m.csv
 
 Classify
