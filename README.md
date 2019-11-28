@@ -6,6 +6,8 @@ Import your glove model or train using your corpus with:
 
 python generate_glove.py -c all_comments.txt -t 100 -f 100 -p 10 
 
+Or import from: http://nilc.icmc.usp.br/embeddings
+
 generate predict model using column 3 (category A)
 
 python analyze_glove.py ../data/BradescoCartoes.csv  3
