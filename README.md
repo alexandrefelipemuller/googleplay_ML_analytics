@@ -51,22 +51,26 @@ The dataset is composed in portuguese comments in GooglePlay for banking applica
 
 | Aplication  | Filename | # of comments      |  Classified category A | Classified Category B |
 |-------------|:--------:|:------------------:|:----------------------:|:---------------------:|
-| Bradesco Cartões | BradescoCartoes.csv |  21040 | 145 | 48 | |
-| NuBank | nuBank.csv |   10000   |   68 | 33 |
-| Cartões Caixa | CartoesCaixa.csv | 8560 | 73 | 47 |
-| Santander Way | SantanderWay.csv | 14240 | 63 | 0 |
-| Pag Seguro | PagSeguro.csv | 46560 | 20 | 29 | 
-| OuroCard | OuroCard.csv |    10318 | 63 | 0 | 
-| Next Banco | Next.csv | 35598 | 60 | 0 | 
-| Neon Banco | Neon.csv | 20999 | 16 | 17 | 
-| ItauCard | ItauCard.csv  | 28120 | 62 | 38 | 
-| Itau Banco | Itau.csv | 20798 | 63 | 0 | 
-| Inter Banco | Inter.csv | 23440 | 74 | 0 | 
-| HiperCard | HiperCard.csv | 12519 | 14 | 0 |
-| Digio | Digio.csv | 14440 | 0 | 0 |
-| Cartões CasasBahia | CasasBahia.csv | 3720 | 16 | 0 |
-| Cartões Luiza | CartoesLuiza.csv | 10839 | 16 | 0 |
-| Cartões Carrefour | CartoesCarrefour.csv | 6920 | 20 | 0 | 
-| Bradesco NetEmpresa | BradescoNetEmpresa.csv | 12227| 0 | 0 |
-| Bradesco Exclusive | BradescoExclusive.csv | 16560| 0 | 0 |
-| Bradesco DIN | BradescoDIN.csv |  855| 0 | 0 |
+|Bradesco Cartões |	BradescoCartoes.csv |	21040 |	208 |	61 |
+|NuBank	| nuBank.csv |	10000 |		100	 |	45 |	
+|Cartões Caixa |	CartoesCaixa.csv |		8560	 |	103 |		69 |	
+|Santander Way |	SantanderWay.csv	 |	14240	 |	100	 |	0 |	
+|Pag Seguro |	PagSeguro.csv	 |	46560	 |	51	 |	51 |	
+|OuroCard |	OuroCard.csv |		10318 |		104 |		0 |	
+|Next Banco |	Next.csv |		35598	 |	107 |		0 |	
+|Neon Banco |	Neon.csv |		20999	 |	24 |		24 |	
+|ItauCard |	ItauCard.csv	 |	28120 |		116	 |	55 |	
+|Itau Banco |	Itau.csv |		20798	 |	100 |		0 |	
+|Inter Banco |	Inter.csv	 |	23440	 |	113 |		0 |	
+|HiperCard |	HiperCard.csv	 |	12519 |		33 |		0 |	
+|Cartões CasasBahia |	CasasBahia.csv	 |	3720	 |	44	 |	0 |	
+|Cartões Luiza |	CartoesLuiza.csv |		10839 |		27 |		0 |	
+|Cartões Carrefour |	CartoesCarrefour.csv |		6920	 |	27 |		0 |	
+|Bradesco NetEmpresa |	BradescoNetEmpresa.csv |		12227 |		0 |		0 |	
+|Bradesco Exclusive |	BradescoExclusive.csv	 |	16560	 |	0 |		0 |	
+|Bradesco DIN| BradescoDIN.csv |		855 |		0	 |	0 |	
+|Digio |	Digio.csv	 |	14440 |		0 |		0 |	
+|TOTAL|	 |			317753 |		1257	 |	305 |	
+
+
+
