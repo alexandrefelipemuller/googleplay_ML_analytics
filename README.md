@@ -30,8 +30,8 @@ python classifier.py ../data/BradescoCartoes.csv
 ## Category A 
 The meaning according business issue
 
-+ 1 Suggestion - improvements, criticism with root case
-+ 2 Complaint - criticism with no root case
++ 1 Suggestion - improvements, criticism with root cause
++ 2 Complaint - criticism with no root cause
 + 3 Help - difficulties, business issue
 + 4 Compliment
 
