@@ -9,20 +9,23 @@ Automatic Machine Learning Analytics for Google Play Comments
 
 Or import model from: http://nilc.icmc.usp.br/embeddings
 
-*   generate predict model using column 3 (category A)
+*   generate training model using column 3 (category A)
 
-        python analyze_glove.py ../data/BradescoCartoes.csv
-        mv output.csv output_p.csv
-
-*   generate training model
-
-        ../data/generateCSV.sh
+        cd ../data
+        ./generateInput.sh
+        mv input.csv ../scripts
+        cd ../scripts
         python analyze_glove.py input.csv 3
         mv output.csv output_m.csv
+        
+*   generate predict model using column 3 (category A)
+
+        python analyze_glove.py ../data/BradescoCartoes.csv 3
+        mv output.csv output_p.csv
 
 *    Classify
 
-    python classifier.py ../data/BradescoCartoes.csv 
+        python classifier.py file_to_split.csv
 
 # The Category
 
