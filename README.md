@@ -20,7 +20,7 @@ Or import model from: http://nilc.icmc.usp.br/embeddings
         
 *   generate predict model using column 3 (category A)
 
-        python analyze_glove.py ../data/BradescoCartoes.csv
+        python analyze_glove.py ../data/BradescoCartoes.csv 3
         mv output.csv output_p.csv
 
 *    Classify
