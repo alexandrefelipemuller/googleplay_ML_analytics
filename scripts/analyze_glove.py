@@ -98,7 +98,7 @@ with open('output.csv', 'w') as csvfile:
                                         pass
                         else:
                                 pass
-                if (reviewCount % 500 == 0):
+                if (reviewCount % 100 == 0):
                         print ("Review ",reviewCount," com ",validWords," palavras")
 		reviewVec.append(value[column])
                 if validWords > 0:
