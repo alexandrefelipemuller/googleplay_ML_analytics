@@ -53,10 +53,10 @@ The dataset is composed in portuguese comments/reviews in GooglePlay for banking
 
 | Aplication  | Filename | # of comments      |  Classified category A | Classified Category B |
 |-------------|:--------:|:------------------:|:----------------------:|:---------------------:|
-|Bradesco Cartões |	BradescoCartoes.csv |	21040 |	208 |	61 |
-|NuBank	| nuBank.csv |	10000 |		100	 |	45 |	
+|Bradesco Cartões |	BradescoCartoes.csv |	25965 |	208 |	61 |
+|NuBank	| nuBank.csv |	14497 |		100	 |	45 |	
 |Cartões Caixa |	CartoesCaixa.csv |		8560	 |	103 |		69 |	
-|Santander Way |	SantanderWay.csv	 |	14240	 |	100	 |	0 |	
+|Santander Way |	SantanderWay.csv	 |	19123	 |	100	 |	0 |	
 |Pag Seguro |	PagSeguro.csv	 |	46560	 |	51	 |	51 |	
 |OuroCard |	OuroCard.csv |		10318 |		104 |		0 |	
 |Next Banco |	Next.csv |		35598	 |	107 |		0 |	
@@ -72,7 +72,7 @@ The dataset is composed in portuguese comments/reviews in GooglePlay for banking
 |Bradesco Exclusive |	BradescoExclusive.csv	 |	16560	 |	0 |		0 |	
 |Bradesco DIN| BradescoDIN.csv |		855 |		0	 |	0 |	
 |Digio |	Digio.csv	 |	14440 |		0 |		0 |	
-|TOTAL|	 |			317753 |		1257	 |	305 |	
+|TOTAL|	 |			332058 |		1257	 |	305 |	
 
 
 
