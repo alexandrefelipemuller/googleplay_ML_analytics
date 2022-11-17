@@ -18,14 +18,14 @@ Or import model from: http://nilc.icmc.usp.br/embeddings
         python analyze_glove.py input.csv 3
         mv output.csv output_m.csv
         
- *   generate predict model using column 3 (category A)
+*   generate predict model using column 3 (category A)
 
         python analyze_glove.py ../data/BradescoCartoes.csv
         mv output.csv output_p.csv
 
 *    Classify
 
-    python classifier.py file_to_split.csv
+        python classifier.py file_to_split.csv
 
 # The Category
 
