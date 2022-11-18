@@ -5,6 +5,8 @@ Automatic Machine Learning Analytics for Google Play Comments
 
 *   Import your glove model or train using your corpus with:
 
+        cd data && cut -d';' -f3 *.csv >> ../scripts/all_comments.txt
+        cd ../scripts
         python generate_glove.py -c all_comments.txt -t 100 -f 100 -p 10
 
 Or import model from: http://nilc.icmc.usp.br/embeddings
@@ -53,17 +55,17 @@ The dataset is composed in portuguese comments/reviews in GooglePlay for banking
 
 | Aplication  | Filename | # of comments      |  Classified category A | Classified Category B |
 |-------------|:--------:|:------------------:|:----------------------:|:---------------------:|
-|Bradesco Cartões |	BradescoCartoes.csv |	25965 |	208 |	61 |
+|Bradesco Cartões |	BradescoCartoes.csv |	29048 |	208 |	61 |
 |NuBank	| nuBank.csv |	14497 |		100	 |	45 |	
-|Cartões Caixa |	CartoesCaixa.csv |		8560	 |	103 |		69 |	
+|Cartões Caixa |	CartoesCaixa.csv |		12800	 |	103 |		69 |	
 |Santander Way |	SantanderWay.csv	 |	19123	 |	100	 |	0 |	
 |Pag Seguro |	PagSeguro.csv	 |	46560	 |	51	 |	51 |	
 |OuroCard |	OuroCard.csv |		10318 |		104 |		0 |	
 |Next Banco |	Next.csv |		35598	 |	107 |		0 |	
 |Neon Banco |	Neon.csv |		20999	 |	24 |		24 |	
-|ItauCard |	ItauCard.csv	 |	28120 |		116	 |	55 |	
+|ItauCard |	ItauCard.csv	 |	33520 |		116	 |	55 |	
 |Itau Banco |	Itau.csv |		20798	 |	100 |		0 |	
-|Inter Banco |	Inter.csv	 |	23440	 |	113 |		0 |	
+|Inter Banco |	Inter.csv	 |	26099	 |	113 |		0 |	
 |HiperCard |	HiperCard.csv	 |	12519 |		33 |		0 |	
 |Cartões CasasBahia |	CasasBahia.csv	 |	3720	 |	44	 |	0 |	
 |Cartões Luiza |	CartoesLuiza.csv |		10839 |		27 |		0 |	
@@ -72,7 +74,8 @@ The dataset is composed in portuguese comments/reviews in GooglePlay for banking
 |Bradesco Exclusive |	BradescoExclusive.csv	 |	16560	 |	0 |		0 |	
 |Bradesco DIN| BradescoDIN.csv |		855 |		0	 |	0 |	
 |Digio |	Digio.csv	 |	14440 |		0 |		0 |	
-|TOTAL|	 |			332058 |		1257	 |	305 |	
+|BradescoCartões PJ |	BradescoCartoesPJ.csv	 |	648 |		0 |		0 |	
+|TOTAL|	 |			348088 |		1257	 |	305 |	
 
 
 
