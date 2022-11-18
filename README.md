@@ -5,6 +5,8 @@ Automatic Machine Learning Analytics for Google Play Comments
 
 *   Import your glove model or train using your corpus with:
 
+        cd data && cut -d';' -f3 *.csv >> ../scripts/all_comments.txt
+        cd ../scripts
         python generate_glove.py -c all_comments.txt -t 100 -f 100 -p 10
 
 Or import model from: http://nilc.icmc.usp.br/embeddings
@@ -72,7 +74,7 @@ The dataset is composed in portuguese comments/reviews in GooglePlay for banking
 |Bradesco Exclusive |	BradescoExclusive.csv	 |	16560	 |	0 |		0 |	
 |Bradesco DIN| BradescoDIN.csv |		855 |		0	 |	0 |	
 |Digio |	Digio.csv	 |	14440 |		0 |		0 |	
-|BradescoCartões PJ |	BradescoCartoesPJ.csv	 |	14440 |		0 |		0 |	
+|BradescoCartões PJ |	BradescoCartoesPJ.csv	 |	648 |		0 |		0 |	
 |TOTAL|	 |			348088 |		1257	 |	305 |	
 
 
