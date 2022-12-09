@@ -8,23 +8,31 @@ import sys
 
 #read in the data using pandas
 
+def clean_dataset(df):
+    assert isinstance(df, pd.DataFrame), "df needs to be a pd.DataFrame"
+    df.dropna(inplace=True)
+    indices_to_keep = ~df.isin([np.nan, np.inf, -np.inf]).any(1)
+    return df[indices_to_keep].astype(np.float64)
+
 df = pd.read_csv("output_m.csv")
+df=clean_dataset(df)
+
 #check data has been read in properly
-#print(df.head())
+print(df.head())
 
 #check number of rows and columns in dataset
-#print(df.shape)
+print(df.shape)
 #create a dataframe with all training data except the target column
 
 X = df.drop(columns=['target'])
 #check that the target variable has been removed
-#print(X.head())
+print(X.head())
 
 #separate target values
 y = df['target'].values
 
 #view target values
-#print(y[0:5])
+print(y[0:5])
 
 from sklearn.model_selection import train_test_split
 #split dataset into train and test data
